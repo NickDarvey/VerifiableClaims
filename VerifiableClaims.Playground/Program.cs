@@ -8,8 +8,8 @@ namespace NickDarvey.VerifiableClaims.Playround
     {
         static void Main(string[] args)
         {
-            var profileId = ProfileId.NewProfileId(new Uri("urn:my:id"));
-
+            //profile
+            //var profileId = ProfileId.NewProfileId(new Uri("urn:my:id"));
             Console.WriteLine(profileId);
         }
     }

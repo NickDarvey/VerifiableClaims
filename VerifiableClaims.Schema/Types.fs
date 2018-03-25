@@ -2,26 +2,33 @@ namespace NickDarvey.VerifiableClaims.Schema
 
 open System
 
-type set<'T when 'T : comparison> = System.Collections.Immutable.IImmutableSet<'T>
 
-type SignatureType = SignatureType of string
-type Signature = {
-    Type: SignatureType
+type ProofType = ProofType of string
+type Proof = {
+    Type: ProofType
 }
 
 type ProfileId = ProfileId of Uri
 type ProfileType = ProfileType of string
 type Profile = { 
     Id: ProfileId
-    Type: ProfileType set
-    Signature: Signature option
+    Types: ProfileType seq
+    Proof: Proof option
 }
+
+module Profile =
+    let EntityProfileType = ProfileType "Entity" 
+
+    let create id types signature =
+        if Seq.contains EntityProfileType types
+        then { Id = id; Types = EntityProfileType::types; Proof = signature }
+        else { Id = id; Types = types; Proof = signature }
 
 type RevocationId = RevocationId of Uri
 type RevocationType = RevocationType of string
 type Revocation = {
     Id: RevocationId
-    Type: RevocationType set
+    Types: RevocationType seq
 }
 
 type CredentialId = CredentialId of Uri
@@ -29,11 +36,11 @@ type CredentialType = CredentialType of string
 type Claim = { Id: ProfileId }
 type Credential = {
     Id: CredentialId
-    Type: CredentialType set
+    Type: CredentialType seq
     Issuer: ProfileId
     Issued: DateTimeOffset
     Expires: DateTimeOffset option
     Claim: Claim
     Revocation: Revocation option
-    Signature: Signature option
+    Signature: Proof option
 }
