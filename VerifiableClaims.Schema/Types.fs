@@ -2,45 +2,55 @@ namespace NickDarvey.VerifiableClaims.Schema
 
 open System
 
-
-type ProofType = ProofType of string
-type Proof = {
-    Type: ProofType
-}
-
-type ProfileId = ProfileId of Uri
-type ProfileType = ProfileType of string
-type Profile = { 
-    Id: ProfileId
-    Types: ProfileType seq
-    Proof: Proof option
-}
+module Security =
+    type ProofType = ProofType of string
+    type Proof = {
+        Type: ProofType
+    }
 
 module Profile =
-    let EntityProfileType = ProfileType "Entity" 
+    type ProfileId = ProfileId of Uri
+    type ProfileType = ProfileType of string
 
-    let create id types signature =
-        if Seq.contains EntityProfileType types
-        then { Id = id; Types = EntityProfileType::types; Proof = signature }
-        else { Id = id; Types = types; Proof = signature }
 
-type RevocationId = RevocationId of Uri
-type RevocationType = RevocationType of string
-type Revocation = {
-    Id: RevocationId
-    Types: RevocationType seq
-}
+module Credential =
+    type CredentialId = CredentialId of Uri
+    type CredentialType = CredentialType of string
 
-type CredentialId = CredentialId of Uri
-type CredentialType = CredentialType of string
-type Claim = { Id: ProfileId }
+    type CredentialStatusId = CredentialStatusId of Uri
+    type CredentialStatusType = CredentialStatusType of string
+    type CredentialStatus = {
+        Id: CredentialStatusId
+        Types: CredentialStatusType seq
+    }
+
+    type Claim = { 
+        Id: Profile.ProfileId
+    }
+
 type Credential = {
-    Id: CredentialId
-    Type: CredentialType seq
-    Issuer: ProfileId
+    Id: Credential.CredentialId
+    Type: Credential.CredentialType seq
+    Issuer: Profile.ProfileId
     Issued: DateTimeOffset
     Expires: DateTimeOffset option
-    Claim: Claim
-    Revocation: Revocation option
-    Signature: Proof option
+    Claim: Credential.Claim
+    CredentialStatus: Credential.CredentialStatus option
+    Proof: Security.Proof option
 }
+
+
+type Profile = { 
+    Id: Profile.ProfileId
+    Types: Profile.ProfileType seq
+    Credential: Credential seq option
+    Proof: Security.Proof seq option
+}
+
+//module Profile =
+//    let EntityProfileType = ProfileType "Entity" 
+
+//    let create id types signature =
+//        if Seq.contains EntityProfileType types
+//        then { Id = id; Types = EntityProfileType::types; Proof = signature }
+//        else { Id = id; Types = types; Proof = signature }
