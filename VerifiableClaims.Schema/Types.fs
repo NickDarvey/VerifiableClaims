@@ -14,7 +14,7 @@ type ProfileType = ProfileType of string
 type Profile = { 
     Id: ProfileId
     Type: ProfileType set
-    Signature: Proof option
+    Proof: Proof option
 }
 
 type CredentialStatusId = RevocationId of Uri
