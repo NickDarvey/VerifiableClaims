@@ -4,9 +4,9 @@ open System
 
 type set<'T when 'T : comparison> = System.Collections.Immutable.IImmutableSet<'T>
 
-type SignatureType = SignatureType of string
-type Signature = {
-    Type: SignatureType
+type ProofType = SignatureType of string
+type Proof = {
+    Type: ProofType
 }
 
 type ProfileId = ProfileId of Uri
@@ -14,14 +14,14 @@ type ProfileType = ProfileType of string
 type Profile = { 
     Id: ProfileId
     Type: ProfileType set
-    Signature: Signature option
+    Signature: Proof option
 }
 
-type RevocationId = RevocationId of Uri
-type RevocationType = RevocationType of string
-type Revocation = {
-    Id: RevocationId
-    Type: RevocationType set
+type CredentialStatusId = RevocationId of Uri
+type CredentialStatusType = RevocationType of string
+type CredentialStatus = {
+    Id: CredentialStatusId
+    Type: CredentialStatusType set
 }
 
 type CredentialId = CredentialId of Uri
@@ -34,6 +34,6 @@ type Credential = {
     Issued: DateTimeOffset
     Expires: DateTimeOffset option
     Claim: Claim
-    Revocation: Revocation option
-    Signature: Signature option
+    CredentialStatus: CredentialStatus option
+    Proof: Proof option
 }
