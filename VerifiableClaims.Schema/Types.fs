@@ -37,3 +37,12 @@ type Credential = {
     CredentialStatus: CredentialStatus option
     Proof: Proof option
 }
+
+type PresentationId = PresentationId of Uri
+type PresentationType = PresentationType of string
+type Presentation = {
+    Id: PresentationId
+    Type: PresentationType set
+    VerifiableCredential: Credential list
+    Proof: Proof list
+}
